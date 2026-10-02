@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GSTR-1 Portal</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef2f7;--panel:#fff;--ink:#1b2733;--mute:#5d6b7a;--line:#dbe2ea;--accent:#0b5cad;--accent-ink:#fff;--nav:#0f2a47;--head:#eaf0f7;--stripe:#f6f9fc;--err:#b3261e;--warn:#9a5b00;--shadow:0 1px 3px rgba(15,42,71,.08),0 4px 14px rgba(15,42,71,.05)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e141b;--panel:#161e27;--ink:#e6edf3;--mute:#93a1b0;--line:#27323e;--accent:#4c9aea;--accent-ink:#06121f;--nav:#0a1119;--head:#1e2833;--stripe:#1a232d;--err:#ff8a80;--warn:#ffc266;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0e141b;--panel:#161e27;--ink:#e6edf3;--mute:#93a1b0;--line:#27323e;--accent:#4c9aea;--accent-ink:#06121f;--nav:#0a1119;--head:#1e2833;--stripe:#1a232d;--err:#ff8a80;--warn:#ffc266;--shadow:none}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:14.5px/1.5 "Segoe UI","Noto Sans",system-ui,sans-serif}
+.top{background:var(--nav);color:#fff;border-bottom:3px solid var(--accent)}
+.top .in{max-width:1240px;margin:0 auto;padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:14px;align-items:center;min-width:0}
+.logo{flex:none;width:44px;height:44px;border-radius:8px;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:700;font-size:16px;letter-spacing:.5px}
+h1{margin:0;font-size:20px;font-weight:600;line-height:1.25;overflow-wrap:anywhere}
+.sub{margin:2px 0 0;font-size:13px;color:#b7c6d8}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tools span{font-size:12.5px;color:#b7c6d8}
+.tools a{padding:7px 13px;border:1px solid rgba(255,255,255,.35);border-radius:6px;color:#fff;text-decoration:none;font-size:13.5px}
+.tools a:hover,.tools a:focus-visible{background:#fff;color:var(--nav);outline:none}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 20px 40px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);margin-bottom:18px;overflow:hidden}
+.box>h2{margin:0;padding:12px 18px;font-size:15px;font-weight:600;background:var(--head);border-bottom:1px solid var(--line)}
+.bd{padding:16px 18px}
+.drop{border:2px dashed var(--line);background:var(--stripe);border-radius:8px;padding:28px 18px;text-align:center;cursor:pointer}
+.drop.over,.drop:hover,.drop:focus-visible{border-color:var(--accent);outline:none}
+.drop b{display:block;font-size:16px}
+.drop span{color:var(--mute);font-size:13px}
+.co{display:block;margin:0 0 14px;color:var(--mute);font-size:13px}.co input{display:block;width:100%;max-width:520px;margin-top:5px;padding:9px 11px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);font:inherit;font-size:15px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--line)}
+.bar .lbl{color:var(--mute);font-size:13px;margin-right:4px}
+button{font:inherit;padding:8px 15px;border:1px solid var(--accent);background:var(--panel);color:var(--accent);border-radius:6px;cursor:pointer;font-weight:500}
+button.pri{background:var(--accent);color:var(--accent-ink)}
+button:hover:not(:disabled){filter:brightness(.94)}
+button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.tabs{display:flex;gap:2px;overflow-x:auto;padding:10px 18px 0;background:var(--head);border-bottom:1px solid var(--line)}
+.tab{border:1px solid transparent;border-bottom:0;border-radius:6px 6px 0 0;color:var(--mute);background:none;white-space:nowrap;font-weight:500}
+.tab[aria-selected=true]{background:var(--panel);color:var(--accent);border-color:var(--line);font-weight:600;margin-bottom:-1px}
+.tab small{margin-left:6px;padding:1px 7px;border-radius:10px;background:var(--line);color:var(--ink);font-size:11.5px}
+.panel{padding:16px 18px}
+.scroll{overflow-x:auto;max-width:100%;border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:var(--nav);color:#fff;font-weight:600;position:sticky;top:0}
+tbody tr:nth-child(even) td{background:var(--stripe)}
+tbody tr:hover td{background:var(--head)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tfoot td{font-weight:700;background:var(--head);border-top:2px solid var(--accent)}
+table tbody tr.cancel td{background:#ffe600;color:#b00000;font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:6px}
+.card{border:1px solid var(--line);border-top:3px solid var(--accent);padding:12px 14px;border-radius:6px;background:var(--panel)}
+.card h3{margin:0 0 4px;font-size:13px;color:var(--mute);font-weight:600}
+.card strong{font-size:21px;display:block}
+.card p{margin:2px 0 0;color:var(--mute);font-size:12.5px}
+.msg{padding:10px 14px;border-left:4px solid var(--accent);background:var(--panel);border-radius:4px;margin-top:12px;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.msg.err{border-left-color:var(--err)}
+.sev-Error{color:var(--err);font-weight:600}.sev-Warning{color:var(--warn);font-weight:600}
+.empty{color:var(--mute);padding:28px 0;text-align:center}
+.foot{max-width:1240px;margin:0 auto;padding:0 20px 28px;color:var(--mute);font-size:12.5px;text-align:center}
+@media(max-width:600px){.top .in,.wrap{padding-left:12px;padding-right:12px}.bd,.panel,.bar{padding-left:12px;padding-right:12px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="in">
+<div class="brand"><div class="logo" aria-hidden="true">G1</div>
+<div><h1 id="firm">GSTR-1 Portal</h1><p class="sub" id="period">Sales Excel / CSV import karein, GSTR-1 ke tables apne aap ban jayenge</p></div></div>
+<div class="tools">
+<span>GST Tools:</span>
+<a href="https://services.gst.gov.in/services/searchtp" target="_blank" rel="noopener noreferrer">GSTIN se party check karein</a>
+<a href="https://services.gst.gov.in/services/searchtpbypan" target="_blank" rel="noopener noreferrer">PAN se GST number dhundhein</a>
+</div></div></header>
+<main class="wrap">
+<section class="box"><h2>Data import</h2><div class="bd">
+<label class="co">Company name (PDF aur Excel me aayega, khali chhodne par file se liya jayega)<input id="co" type="text" placeholder="Company ka naam" autocomplete="off"></label>
+<div class="drop" id="drop" tabindex="0" role="button" aria-label="Excel ya CSV file chunein">
+<b>Excel ya CSV yahan chhodein, ya click karke chunein</b>
+<span>.xlsx · .xls · .csv · Laxmi Plywood aur Bricks format apne aap pehchane jate hain</span>
+<input type="file" id="file" accept=".xlsx,.xls,.csv" hidden>
+</div>
+<div id="msg"></div>
+</div></section>
+<section class="box"><h2>GSTR-1 details</h2>
+<div class="bar"><span class="lbl">Export:</span>
+<button class="pri" id="bX" disabled>Excel (sabhi tables)</button>
+<button id="bC" disabled>CSV (yeh table)</button>
+<button id="bP" disabled>PDF (yeh table)</button>
+<button id="bPA" disabled>PDF (sabhi tables)</button>
+</div>
+<div class="tabs" id="tabs" role="tablist"></div>
+<div class="panel" id="panel"><div class="empty">Abhi koi data import nahi hua.</div></div>
+</section>
+</main>
+<div class="foot">Aapka data sirf aapke browser me process hota hai, kahin upload nahi hota.</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script>
+var $=function(i){return document.getElementById(i)};
+var lastBuf=null,sets=[],cur=0,meta={firm:'',period:''},rows=[];
+
+function num(v){if(typeof v==='number')return v;v=String(v==null?'':v).replace(/[,%\s₹]/g,'');return parseFloat(v)||0}
+function r2(x){return Math.round(x*100)/100}
+function fmt(x){return Number(x).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function key(s){return String(s==null?'':s).toLowerCase().replace(/[^a-z0-9]/g,'')}
+function dstr(v){
+  if(typeof v==='number'&&v>20000){var d=new Date(Math.round((v-25569)*864e5));
+    return ('0'+d.getUTCDate()).slice(-2)+'-'+('0'+(d.getUTCMonth()+1)).slice(-2)+'-'+d.getUTCFullYear()}
+  return String(v==null?'':v).trim()}
+function show(t,err){$('msg').innerHTML=t?'<div class="msg'+(err?' err':'')+'">'+t+'</div>':''}
+
+var lastName='';
+function firmFromFile(n){n=String(n||'').replace(/\.[^.\/\\]+$/,'').replace(/[_\-]+/g,' ').replace(/\(\d+\)\s*$/,'');
+  var m=n.search(/\b(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|sep(t|tember)?|oct(ober)?|nov(ember)?|dec(ember)?|gstr\s*1|sales|\d{4})\b/i);
+  if(m>0)n=n.slice(0,m);
+  n=n.replace(/\s+/g,' ').trim();return /^\d+$/.test(n)?'':n}
+function parse(aoa){
+  var h=-1;
+  for(var i=0;i<aoa.length;i++){var k=(aoa[i]||[]).map(key);
+    if(k.some(function(c){return c==='invoice'||c==='invoiceno'})&&k.some(function(c){return c.indexOf('hsn')===0})){h=i;break}}
+  if(h<0)throw new Error('Header row nahi mili. "INVOICE" aur "HSN CODE" columns zaroori hain.');
+  var hk=aoa[h].map(key);
+  function col(f){for(var i=0;i<hk.length;i++)if(f(hk[i]))return i;return -1}
+  var C={inv:col(function(c){return c==='invoice'||c==='invoiceno'}),date:col(function(c){return c==='date'}),
+    gstin:col(function(c){return c.indexOf('gstin')>=0||c.indexOf('gstn')>=0}),party:col(function(c){return c.indexOf('party')>=0}),
+    hsn:col(function(c){return c.indexOf('hsn')===0}),rate:col(function(c){return c.indexOf('rateoftax')===0||c==='tax'||c==='taxrate'}),
+    uqc:col(function(c){return c==='uqc'}),qty:col(function(c){return c.indexOf('quantity')>=0||c==='qnt'||c==='qty'}),
+    tax:col(function(c){return c.indexOf('taxablevalue')>=0}),igst:col(function(c){return c==='igst'}),
+    cgst:col(function(c){return c==='cgst'}),sgst:col(function(c){return c==='sgst'}),
+    tot:col(function(c){return c==='totalvalue'||c==='totalinvoice'}),cat:col(function(c){return c==='category'})};
+  if(C.cat<0)for(var q0=0;q0<hk.length&&C.cat<0;q0++){if(hk[q0]!=='')continue;
+    for(var q1=h+1;q1<aoa.length;q1++)if(/^B2[BC]$/i.test(String((aoa[q1]||[])[q0]||'').trim())){C.cat=q0;break}}
+  var bricks=hk.indexOf('qnt')>=0||hk.indexOf('gstnno')>=0;
+  meta.detected=bricks?'Bricks':'Laxmi Plywood';meta.format=meta.detected;
+  meta.firm=h>0?String((aoa[0]||[]).filter(String)[0]||'').trim():'';
+  if(!meta.firm)meta.firm=firmFromFile(lastName);
+  meta.period=h>1?String((aoa[1]||[]).filter(String)[0]||'').trim():'';
+  var out=[],last={};
+  for(var j=h+1;j<aoa.length;j++){var r=aoa[j]||[];
+    var inv=String(r[C.inv]==null?'':r[C.inv]).trim(),hsn=String(r[C.hsn]==null?'':r[C.hsn]).trim();
+    var blank=!r.some(function(c){return String(c==null?'':c).trim()!==''});
+    var isTot=/^\s*total/i.test(inv)||r.some(function(c){return /^\s*total\s*$/i.test(String(c==null?'':c))});
+    if(out.length&&(isTot||blank))break; /* TOTAL row ya khali row ke baad summary hai, ignore */
+    if(!inv||isTot)continue;
+    var rt=num(r[C.rate]);if(rt>0&&rt<=1)rt=r2(rt*100);
+    var g=String(r[C.gstin]==null?'':r[C.gstin]).trim().toUpperCase();
+    var cat=C.cat>=0?String(r[C.cat]||'').trim().toUpperCase():'';
+    if(cat!=='B2B'&&cat!=='B2C')cat=g.length===15?'B2B':'B2C';
+    var tax=num(r[C.tax]),ig=num(r[C.igst]),cg=num(r[C.cgst]),sg=num(r[C.sgst]);
+    out.push({row:j+1,hv:/^\d+$/.test(hsn)&&Number(hsn)>0,inv:inv,date:dstr(r[C.date]),cancel:/cancel/i.test(String(r[C.date]||'')),gstin:g,party:String(r[C.party]||'').trim(),hsn:hsn,rate:rt,
+      uqc:String(r[C.uqc]||'').trim().toUpperCase(),qty:num(r[C.qty]),taxable:tax,igst:ig,cgst:cg,sgst:sg,
+      total:C.tot>=0&&r[C.tot]!==''&&r[C.tot]!=null?num(r[C.tot]):r2(tax+ig+cg+sg),cat:cat})}
+  if(!out.length)throw new Error('Koi sales row nahi mili.');
+  if(!meta.period){var q=/^(\d+)-(\d+)-(\d{4})$/.exec(out[0].date);if(q&&+q[2]>=1&&+q[2]<=12)meta.period=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'][+q[2]-1]+' - '+q[3]}
+  return out}
+
+function sum(a,f){return r2(a.reduce(function(s,x){return s+f(x)},0))}
+function build(all){var d=all.filter(function(x){return !x.cancel}),cn=all.filter(function(x){return x.cancel});
+  var out=[];
+  var taxed=d.filter(function(x){return x.rate>0}),nil=d.filter(function(x){return x.rate===0});
+  // B2B: invoice + rate wise
+  var m={},ord=[];
+  taxed.filter(function(x){return x.cat==='B2B'}).forEach(function(x){var k=x.inv+'|'+x.rate;
+    if(!m[k]){m[k]={g:x.gstin,p:x.party,i:x.inv,d:x.date,r:x.rate,t:0,ig:0,cg:0,sg:0,v:0};ord.push(k)}
+    var o=m[k];o.t+=x.taxable;o.ig+=x.igst;o.cg+=x.cgst;o.sg+=x.sgst;o.v+=x.total});
+  var b2b=ord.map(function(k){var o=m[k];return [o.g,o.p,o.i,o.d,r2(o.v),o.r,r2(o.t),r2(o.ig),r2(o.cg),r2(o.sg)]});
+  out.push({name:'B2B',title:'B2B Invoices (Table 4)',head:['GSTIN','Party','Invoice No','Date','Invoice Value','Rate %','Taxable Value','IGST','CGST','SGST'],rows:b2b,num:[4,5,6,7,8,9],tot:[4,6,7,8,9]});
+  // B2C: rate wise
+  var c={};
+  taxed.filter(function(x){return x.cat==='B2C'}).forEach(function(x){var o=c[x.rate]=c[x.rate]||{t:0,ig:0,cg:0,sg:0,v:0};
+    o.t+=x.taxable;o.ig+=x.igst;o.cg+=x.cgst;o.sg+=x.sgst;o.v+=x.total});
+  var b2c=Object.keys(c).sort(function(a,b){return a-b}).map(function(k){var o=c[k];return [Number(k),r2(o.t),r2(o.ig),r2(o.cg),r2(o.sg),r2(o.v)]});
+  out.push({name:'B2C',title:'B2C Small - Rate wise (Table 7)',head:['Rate %','Taxable Value','IGST','CGST','SGST','Total Value'],rows:b2c,num:[0,1,2,3,4,5],tot:[1,2,3,4,5]});
+  // HSN
+  function hsn(cat,name,title){var h={},o=[];
+    d.filter(function(x){return x.cat===cat&&x.hv}).forEach(function(x){var k=x.hsn+'|'+x.rate+'|'+x.uqc;
+      if(!h[k]){h[k]={hsn:x.hsn,uqc:x.uqc,r:x.rate,q:0,t:0,ig:0,cg:0,sg:0,v:0};o.push(k)}
+      var e=h[k];e.q+=x.qty;e.t+=x.taxable;e.ig+=x.igst;e.cg+=x.cgst;e.sg+=x.sgst;e.v+=x.total});
+    out.push({name:name,title:title,head:['HSN','UQC','Total Qty','Rate %','Taxable Value','IGST','CGST','SGST','Total Value'],
+      rows:o.map(function(k){var e=h[k];return [e.hsn,e.uqc,r2(e.q),e.r,r2(e.t),r2(e.ig),r2(e.cg),r2(e.sg),r2(e.v)]}),num:[2,3,4,5,6,7,8],tot:[2,4,5,6,7,8]})}
+  hsn('B2B','HSN-B2B','HSN Summary - B2B (Table 12)');
+  hsn('B2C','HSN-B2C','HSN Summary - B2C (Table 12)');
+  // Nil
+  out.push({name:'Nil Rated',title:'Nil Rated / Exempt (Table 13)',head:['Invoice No','Date','Party','GSTIN','HSN','Category','Taxable Value'],
+    rows:nil.map(function(x){return [x.inv,x.date,x.party,x.gstin,x.hsn,x.cat,x.taxable]}),num:[6],tot:[6]});
+  // Summary
+  var all=[['B2B Invoices',b2b.length,sum(taxed.filter(function(x){return x.cat==='B2B'}),function(x){return x.taxable}),sum(taxed.filter(function(x){return x.cat==='B2B'}),function(x){return x.cgst+x.sgst+x.igst})],
+    ['B2C Small',b2c.length,sum(taxed.filter(function(x){return x.cat==='B2C'}),function(x){return x.taxable}),sum(taxed.filter(function(x){return x.cat==='B2C'}),function(x){return x.cgst+x.sgst+x.igst})],
+    ['Nil Rated',nil.length,sum(nil,function(x){return x.taxable}),0]];
+  all.push(['Total',all[0][1]+all[1][1]+all[2][1],r2(all[0][2]+all[1][2]+all[2][2]),r2(all[0][3]+all[1][3]+all[2][3])]);
+  out.unshift({name:'Summary',title:'GSTR-1 Summary',head:['Section','Rows','Taxable Value','Total Tax'],rows:all.slice(0,3),num:[1,2,3],tot:[1,2,3],cards:true});
+  var er=check(d);
+  stats={err:er.filter(function(x){return x[3]==='Error'}).length,warn:er.filter(function(x){return x[3]==='Warning'}).length,hsn:d.filter(function(x){return !x.hv}).length,cancel:cn.length};
+  if(er.length)out.splice(1,0,{name:'Errors',title:'Error Check',head:['Excel Row','Invoice','Party','Type','Issue'],rows:er,num:[],tot:[],nofoot:true});
+  out.splice(er.length?2:1,0,{name:'Cancelled',title:'Cancelled Invoices',head:['Excel Row','Invoice','Date','Party','GSTIN','HSN','Taxable Value','Total Value'],
+    rows:cn.map(function(x){return [x.row,x.inv,x.date,x.party,x.gstin,x.hsn,x.taxable,x.total]}),num:[6,7],tot:[],nofoot:true,hl:cn.map(function(){return true})});
+  out.forEach(function(s){if(s.name==='Summary')return;s.sl=true;s.head=['SL No.'].concat(s.head);
+    s.rows=s.rows.map(function(r,i){return [i+1].concat(r)});
+    s.num=s.num.map(function(n){return n+1});s.tot=s.tot.map(function(n){return n+1})});
+  return out}
+
+var RATES=[0,0.25,3,5,12,18,28],GRE=/^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/,stats={err:0,warn:0,hsn:0,cancel:0};
+function check(d){var e=[],seen={};
+  function add(x,s,m){e.push([x.row,x.inv,x.party,s,m])}
+  d.forEach(function(x){
+    if(!x.hv)add(x,'Error','HSN '+(x.hsn===''?'khali hai':x.hsn+' valid HSN nahi hai')+' - HSN table se hata diya gaya');
+    else if([4,6,8].indexOf(x.hsn.length)<0)add(x,'Warning','HSN '+x.hsn+' ke digits 4, 6 ya 8 nahi hain');
+    if(RATES.indexOf(x.rate)<0)add(x,'Error','Tax rate '+x.rate+'% GST slab me nahi hai');
+    if(x.cat==='B2B'&&!GRE.test(x.gstin))add(x,'Error','B2B hai par GSTIN galat ya khali hai: "'+x.gstin+'"');
+    if(x.cat==='B2C'&&GRE.test(x.gstin))add(x,'Warning','GSTIN hai par category B2C hai');
+    if(!x.party)add(x,'Warning','Party name khali hai');
+    if(!/^\d{1,2}[-\/]\d{1,2}[-\/]\d{4}$/.test(x.date))add(x,'Error','Date galat ya khali hai: "'+x.date+'"');
+    if(x.taxable<=0)add(x,'Warning','Taxable value 0 ya negative hai');
+    if(x.qty<=0)add(x,'Warning','Quantity 0 ya negative hai');
+    var tax=x.igst+x.cgst+x.sgst,exp=r2(x.taxable*x.rate/100);
+    if(Math.abs(tax-exp)>1)add(x,'Error','Tax match nahi: hona chahiye '+fmt(exp)+', file me '+fmt(tax));
+    if(x.igst&&(x.cgst||x.sgst))add(x,'Error','IGST ke saath CGST/SGST bhi bhara hai');
+    if(Math.abs(x.cgst-x.sgst)>0.01)add(x,'Error','CGST aur SGST barabar nahi hain');
+    if(Math.abs(x.total-(x.taxable+tax))>1)add(x,'Error','Total value = taxable + tax se match nahi karti');
+    var m=seen[x.inv];if(!m)seen[x.inv]={d:x.date,p:x.party};
+    else if(m.d!==x.date||m.p!==x.party)add(x,'Error','Invoice '+x.inv+' ki date ya party alag rows me alag hai')});
+  return e}
+
+function cell(s,ci,v){return s.num.indexOf(ci)>=0&&typeof v==='number'?(s.head[ci].indexOf('Rate')===0||s.head[ci]==='Rows'?String(v):fmt(v)):String(v==null?'':v)}
+function totals(s){if(s.nofoot)return null;return s.head.map(function(h,i){return (s.sl&&i===0)?s.rows.length:i===(s.sl?1:0)?'Total':s.tot.indexOf(i)>=0?s.rows.reduce(function(a,r){return a+(r[i]||0)},0):''})}
+
+function render(){
+  $('tabs').innerHTML=sets.map(function(s,i){return '<button class="tab" role="tab" aria-selected="'+(i===cur)+'" data-i="'+i+'">'+s.name+'<small>'+s.rows.length+'</small></button>'}).join('');
+  var s=sets[cur],h='';
+  if(s.cards){h+='<div class="cards">'+s.rows.map(function(r){return '<div class="card"><h3>'+r[0]+'</h3><strong>₹ '+fmt(r[2])+'</strong><p>'+r[1]+' entries · Tax ₹ '+fmt(r[3])+'</p></div>'}).join('')+'<div class="card"><h3>Cancelled invoices</h3><strong>'+stats.cancel+'</strong><p>Calculation me nahi joda gaya</p></div>'+(stats.err+stats.warn>0?'<div class="card"><h3>Error check</h3><strong>'+stats.err+' errors</strong><p>'+stats.warn+' warnings · '+stats.hsn+' rows HSN invalid (HSN table se hataye)</p></div>':'')+'</div><br>'}
+  if(!s.rows.length){h+='<div class="empty">Is section me koi data nahi hai.</div>'}
+  else{var t=totals(s);
+    h+='<div class="scroll"><table><thead><tr>'+s.head.map(function(x,i){return '<th class="'+(s.num.indexOf(i)>=0?'n':'')+'">'+x+'</th>'}).join('')+'</tr></thead><tbody>'+
+    s.rows.map(function(r,ri){return '<tr'+(s.hl&&s.hl[ri]?' class="cancel"':'')+'>'+r.map(function(v,i){return '<td class="'+(s.num.indexOf(i)>=0?'n':'')+(v==='Error'||v==='Warning'?' sev-'+v:'')+'">'+cell(s,i,v)+'</td>'}).join('')+'</tr>'}).join('')+
+    '</tbody>'+(t?'<tfoot><tr>'+t.map(function(v,i){return '<td class="'+(s.num.indexOf(i)>=0?'n':'')+'">'+(typeof v==='number'?(s.head[i]==='Rows'||s.head[i]==='SL No.'?v:fmt(v)):v)+'</td>'}).join('')+'</tr></tfoot>':'')+'</table></div>'}
+  $('panel').innerHTML=h;
+  $('firm').textContent=firmName()||'GSTR-1 Portal';
+  $('period').textContent='Format: '+meta.format+' · '+(meta.period?meta.period+' · ':'')+rows.length+' sales rows import hui';
+  ['bX','bC','bP','bPA'].forEach(function(i){$(i).disabled=false})}
+$('tabs').onclick=function(e){var b=e.target.closest('.tab');if(b){cur=+b.dataset.i;render()}};
+
+function firmName(){var v=$('co')?$('co').value.trim():'';return v||meta.firm||''}
+try{var sv=localStorage.getItem('gstr1_company');if(sv)$('co').value=sv}catch(e){}
+$('co').oninput=function(){try{localStorage.setItem('gstr1_company',$('co').value.trim())}catch(e){}if(sets.length)render();else $('firm').textContent=firmName()||'GSTR-1 Portal'};
+function proc(){try{
+    var wb=XLSX.read(new Uint8Array(lastBuf),{type:'array'});
+    var nm=wb.SheetNames,pick=null;
+    if(lastCsv)pick=nm[0];
+    else pick=nm.find(function(n){return n.trim().toLowerCase()==='sales'});
+    if(!pick)throw new Error('"Sales" naam ki sheet nahi mili. Is file me ye sheets hain: '+nm.join(', ')+'. Sirf Sales sheet ka data liya jata hai.');
+    var data=parse(XLSX.utils.sheet_to_json(wb.Sheets[pick],{header:1,raw:true,defval:''}));
+    rows=data;sets=build(rows);cur=0;
+    show('Import ho gaya ('+meta.format+', sheet: '+pick+'): '+rows.length+' rows. '+(stats.err+stats.warn>0?stats.err+' errors, '+stats.warn+' warnings. Errors tab me dekhein.':'Koi error nahi mila.')+(stats.cancel?' '+stats.cancel+' cancelled.':''),stats.err>0);render()
+  }catch(x){show(x.message,true)}}
+var lastCsv=false;
+function load(f){lastName=f.name;lastCsv=/\.csv$/i.test(f.name);var rd=new FileReader();rd.onload=function(e){lastBuf=e.target.result;proc()};rd.readAsArrayBuffer(f);$('file').value=''}
+$('drop').onclick=function(){$('file').click()};
+$('drop').onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();$('file').click()}};
+$('file').onchange=function(e){if(e.target.files[0])load(e.target.files[0])};
+$('drop').ondragover=function(e){e.preventDefault();this.classList.add('over')};
+$('drop').ondragleave=function(){this.classList.remove('over')};
+$('drop').ondrop=function(e){e.preventDefault();this.classList.remove('over');if(e.dataTransfer.files[0])load(e.dataTransfer.files[0])};
+
+function fname(x){var c=firmName().replace(/[^A-Za-z0-9\u0900-\u097F]+/g,'_').replace(/^_+|_+$/g,'');return (c?c+'_':'')+'GSTR1_'+(meta.period||'data').replace(/[^A-Za-z0-9]+/g,'_')+'_'+x}
+function aoa(s){return [[firmName()],[meta.period],[s.title],[]].concat([s.head],s.rows,s.rows.length&&!s.nofoot?[totals(s)]:[])}
+var dl=null;
+if(window.claude&&window.claude.use)window.claude.use('downloads').then(function(x){dl=x}).catch(function(){});
+function save(blob,name){
+  if(dl){dl.save({filename:name,data:blob}).catch(function(e){if(!e||e.code!=='declined')show('Download nahi hua: '+((e&&e.message)||'error'),true)});return}
+  var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();document.body.removeChild(a)}
+$('bX').onclick=function(){var wb=XLSX.utils.book_new();
+  sets.forEach(function(s){var ws=XLSX.utils.aoa_to_sheet(aoa(s));ws['!cols']=s.head.map(function(){return {wch:16}});XLSX.utils.book_append_sheet(wb,ws,s.name.slice(0,31))});
+  var o=XLSX.write(wb,{bookType:'xlsx',type:'array'});save(new Blob([o],{type:'application/octet-stream'}),fname('All.xlsx'))};
+$('bC').onclick=function(){var c=XLSX.utils.sheet_to_csv(XLSX.utils.aoa_to_sheet(aoa(sets[cur])));
+  save(new Blob(['\ufeff'+c],{type:'text/csv;charset=utf-8'}),fname(sets[cur].name.replace(/\s+/g,'_')+'.csv'))};
+function pdf(list,name){var D=new window.jspdf.jsPDF({orientation:'landscape',unit:'pt',format:'a4'}),H=D.internal.pageSize.getHeight(),y=36;
+  D.setFontSize(14);D.text(firmName()||'GSTR-1',40,y);D.setFontSize(9);D.text(meta.period||'',40,y+14);y+=36;
+  list.forEach(function(s){
+    if(y>H-110){D.addPage();y=36}
+    D.setFontSize(11);D.text(s.title,40,y);
+    if(!s.rows.length){D.setFontSize(9);D.text('Koi data nahi',40,y+16);y+=46;return}
+    var body=s.rows.map(function(r){return r.map(function(v,j){return cell(s,j,v)})});
+    var foot=s.rows.length&&!s.nofoot?[totals(s).map(function(v,j){return typeof v==='number'?(s.head[j]==='Rows'||s.head[j]==='SL No.'?String(v):fmt(v)):v})]:[];
+    D.autoTable({startY:y+8,margin:{top:40,left:40,right:40,bottom:34},didParseCell:function(h){var ci=h.column.index;if(s.sl&&ci===0)h.cell.styles.halign='center';else if(s.num.indexOf(ci)>=0)h.cell.styles.halign='right';if(h.section==='body'&&s.hl&&s.hl[h.row.index]){h.cell.styles.fillColor=[255,230,0];h.cell.styles.textColor=[192,0,0];h.cell.styles.fontStyle='bold'}},head:[s.head],body:body,foot:foot,showFoot:'lastPage',theme:'grid',styles:{fontSize:8,cellPadding:{top:3,bottom:3,left:4,right:4},valign:'middle',overflow:'linebreak',lineColor:[190,190,190],lineWidth:0.3,textColor:30},headStyles:{fillColor:[15,92,77],textColor:255,fontStyle:'bold'},footStyles:{fillColor:[231,227,211],textColor:20,fontStyle:'bold'},
+      columnStyles:s.head.reduce(function(a,hd,i){var W={'GSTIN':84,'Date':54,'Excel Row':40,'SL No.':30,'Rate %':36,'HSN':42,'UQC':32,'Invoice':44,'Invoice No':50,'Category':44};if(W[hd])a[i]={minCellWidth:W[hd]};return a},{})});
+    y=D.lastAutoTable.finalY+32});
+  var n=D.getNumberOfPages(),W=D.internal.pageSize.getWidth();
+  for(var p=1;p<=n;p++){D.setPage(p);D.setFontSize(8);D.setTextColor(110);
+    if(p>1)D.text(firmName()+(meta.period?'  |  '+meta.period:''),40,24);
+    D.text('Page '+p+' / '+n,W-40,H-16,{align:'right'})}
+  save(D.output('blob'),name)}
+$('bP').onclick=function(){pdf([sets[cur]],fname(sets[cur].name.replace(/\s+/g,'_')+'.pdf'))};
+$('bPA').onclick=function(){pdf(sets,fname('All.pdf'))};
+</script>
+</body>
+</html>
